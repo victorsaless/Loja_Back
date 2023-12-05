@@ -1,0 +1,221 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de controle de promoções",
+    "description": "Essa API tem como objetivo a manipulação das ofertas",
+    "termsOfService": "http://localhost:3000/termos",
+    "contact": {
+      "email": "capic.2022118TADS0030@aluno.ifpi.edu.br"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/register": {
+      "post": {
+        "summary": "Registro de um novo usuario",
+        "description": "Essa rota ficará responsavel pelo registro  de novos usuarios",
+        "tags": ["User"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/Json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "name": "Gabriel Santos",
+                    "email": "test123@exemplo.com",
+                    "password": "senhateste123",
+                    "Date": "Tue Aug 23 2022 14:47:12 GMT-0700"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "already registered user"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/Json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/postagem": {
+      "post": {
+        "summary": "Criação de uma publicação",
+        "description": "Essa  rota terá como função a criação de uma nova publicação",
+        "tags": ["Post"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/Json": {
+              "schema": {
+                "$ref": "#/components/schemas/Publi"
+              },
+              "examples": {
+                "Publi": {
+                  "value": {
+                    "user": "Iago Moura",
+                    "productName": "Notebook gamer 123",
+                    "productLink": "www.linkteste.com.br",
+                    "ProductDescription": "Notebook gamer 16gb, 500gb ssd, gtx 3050 etc etc"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "erro ao criar publicação"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/Json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Publi"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/listar": {
+      "get": {
+        "summary": "busca de uma promoção pelo nome",
+        "description": "Essa rota terá a função de buscar uma promoção especifica",
+        "tags": ["Post"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/Json": {
+              "schema": {
+                "$ref": "#/components/schemas/Publi"
+              },
+              "examples": {
+                "Publi": {
+                  "value": {
+                    "productName": "Notebook gamer 123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Não foi possivel efetuar a busca!"
+          },
+          "404": {
+            "description": "Publicação não encontrada"
+          },
+          "200": {
+            "description": "Busca concluida com sucesso!",
+            "content": {
+              "application/Json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Publi"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apagar:id": {
+      "delete": {
+        "sumamary": "excluir publicação",
+        "description": "essa rota fica responsavel pela exclusão de uma punlicação",
+        "tags": ["Post"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/Json": {
+              "schema": {
+                "$ref": "#/components/schemas/Publi"
+              },
+              "examples": {
+                "Publi": {
+                  "value": {
+                    "pubId": "2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Não foi possivel excluir essa publicação!"
+          },
+          "200": {
+            "description": "Publicação excluida!"
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "User": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "String"
+            },
+            "email": {
+              "type": "String"
+            },
+            "password": {
+              "type": "String"
+            },
+            "createdAt": {
+              "type": "Date"
+            }
+          }
+        },
+        "Publi": {
+          "type": "object",
+          "properties": {
+            "user": {
+              "type": "String"
+            },
+            "productName": {
+              "type": "String"
+            },
+            "productLink": {
+              "type": "String"
+            },
+            "productDescription": {
+              "type": "String"
+            }
+          }
+        }
+      },
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  }
+}
