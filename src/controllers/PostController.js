@@ -2,14 +2,15 @@ const PostService = require("../services/publicacao");
 const PostModel = require("../model/Pub");
 const express = require("express");
 const router = express.Router();
+const authMiddleware = require('../middlewares/authenticate');
 
 const postService = new PostService(PostModel);
 
 router.post("/postagem", async (req, res) => {
  
   try {
-    const { user, productName, productLink, productDescription, imageUrl } = req.body;
-    const publicacao = await postService.createPubli(user, productName, productLink, productDescription, imageUrl);
+    const { userName, user, productName, productLink, productDescription, imageUrl, productPrice } = req.body;
+    const publicacao = await postService.createPubli(userName, user, productName, productLink, productDescription, imageUrl, productPrice);
     
       
     res
@@ -25,6 +26,7 @@ router.post("/postagem", async (req, res) => {
 router.get("/listar", async (req, res) => {
 
   try {
+
     const { productName } = req.body;
     const publicacao = await postService.selectPubli(productName);
     res.status(200).json(publicacao);
@@ -58,5 +60,19 @@ router.delete("/apagar:id", async (req, res) => {
       });
   }
 });
+
+
+router.get('/meus-posts', authMiddleware, async (req, res) => {
+  try {
+    console.log(req.body);
+     const userId = req.userLogged.id;
+     console.log(userId , 'userId');
+     const publicacoes = await postService.selectPubliByUser(userId);
+     res.status(200).json(publicacoes);
+  } catch (error) {
+     res.status(500).json({ error: 'Erro ao buscar seus posts', message: error.message });
+  }
+});
+
 
 module.exports = router;

@@ -1,12 +1,14 @@
+const Publi = require("../model/Pub");
+
 class publiServices {
     constructor(PubSchema){
         this.pubSchema = PubSchema;
     }
 
-    async createPubli(user, productName, productLink, productDescription, imageUrl) {
+    async createPubli(userName, user, productName, productLink, productDescription, imageUrl, productPrice) {
         
         try {
-           const publicacao = await this.pubSchema.create({user: user, productName: productName,productLink: productLink, productDescription: productDescription, imageUrl: imageUrl})
+           const publicacao = await this.pubSchema.create({userName: userName,user: user, productName: productName,productLink: productLink, productDescription: productDescription, imageUrl: imageUrl, productPrice: productPrice})
            
            return publicacao
         } catch (error) {
@@ -18,7 +20,6 @@ class publiServices {
     async selectPubli(productName) {
         try{
             const publicacao = await this.pubSchema.find(productName);
-
             return publicacao;
         }catch(error) {
             console.log("Publicação não encontrada", error);
@@ -38,6 +39,18 @@ class publiServices {
         }
     }
 
+
+    async selectPubliByUser(userId) {
+        try {
+          // Use o método find para buscar todas as publicações onde o campo "user" é igual ao ID do usuário
+          const publicacoesDoUsuario = await Publi.find({ user: userId });
+    
+          return publicacoesDoUsuario;
+        } catch (error) {
+          throw error;
+        }
+      }
+    
 }
 
 module.exports = publiServices;

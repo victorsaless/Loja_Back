@@ -1,7 +1,10 @@
-// Esquema da publicação (PubSchema)
 const mongoose = require("../database").default;
 
 const PubSchema = new mongoose.Schema({
+  userName: {
+    type: String,
+    required: true,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -18,9 +21,15 @@ const PubSchema = new mongoose.Schema({
   productDescription: {
     type: String,
   },
+
+  productPrice: {
+    type: Number,
+    required: true,
+  },
+
   imageUrl: {
     type: String,
-    required: false,
+    required: true,
   },
   favorited: {
     type: Boolean,

@@ -42,7 +42,8 @@ module.exports = (req, res, next) => {
         }
 
         req.userLogged = decoded;
-        
+        // let cuzinho = {_id, email, createdAt, userPosts, favoritos} = decoded;
+        // console.log(userPosts);
         console.log(err);
         console.log(decoded);
 
